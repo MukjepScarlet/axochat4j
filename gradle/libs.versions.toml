@@ -1,0 +1,22 @@
+[versions]
+lombok = "1.18.38" # latest
+jetbrains-annotations = "26.0.2" # latest
+netty = "4.0.23.Final" # Minecraft 1.8.8
+gson = "2.2.4" # Minecraft 1.8.8
+jackson = "2.15.4"
+okhttp = "4.12.0" # 4.x stable
+kotlin = "2.0.0"
+
+[libraries]
+lombok = { module = "org.projectlombok:lombok", version.ref = "lombok" }
+jetbrains-annotations = { module = "org.jetbrains:annotations", version.ref = "jetbrains-annotations" }
+
+okhttp = { module = "com.squareup.okhttp3:okhttp", version.ref = "okhttp" }
+
+gson = { module = "com.google.code.gson:gson", version.ref = "gson" }
+jackson-core = { module = "com.fasterxml.jackson.core:jackson-core", version.ref = "jackson" }
+jackson-databind = { module = "com.fasterxml.jackson.core:jackson-databind", version.ref = "jackson" }
+jackson-annotations = { module = "com.fasterxml.jackson.core:jackson-annotations", version.ref = "jackson" }
+
+[plugins]
+kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
