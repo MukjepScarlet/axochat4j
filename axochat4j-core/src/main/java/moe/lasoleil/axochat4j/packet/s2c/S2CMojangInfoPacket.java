@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.gson.annotations.SerializedName;
 import lombok.Value;
 import moe.lasoleil.axochat4j.annotation.PacketName;
-import moe.lasoleil.axochat4j.packet.AxochatC2SPacket;
+import moe.lasoleil.axochat4j.packet.AxochatS2CPacket;
 import org.jetbrains.annotations.NotNull;
 
 /**
@@ -14,7 +14,7 @@ import org.jetbrains.annotations.NotNull;
  */
 @PacketName("MojangInfo")
 @Value
-public class S2CMojangInfoPacket implements AxochatC2SPacket {
+public class S2CMojangInfoPacket implements AxochatS2CPacket {
 
     /**
      * session_hash to authenticate with Mojang

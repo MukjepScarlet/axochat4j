@@ -4,14 +4,14 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.gson.annotations.SerializedName;
 import lombok.Value;
 import moe.lasoleil.axochat4j.annotation.PacketName;
-import moe.lasoleil.axochat4j.packet.AxochatC2SPacket;
+import moe.lasoleil.axochat4j.packet.AxochatS2CPacket;
 
 /**
  * This packet is sent after {@link moe.lasoleil.axochat4j.packet.c2s.C2SRequestUserCountPacket} was received.
  */
 @PacketName("UserCount")
 @Value
-public class S2CUserCountPacket implements AxochatC2SPacket {
+public class S2CUserCountPacket implements AxochatS2CPacket {
 
     /**
      * connections is the number of connections this server has open

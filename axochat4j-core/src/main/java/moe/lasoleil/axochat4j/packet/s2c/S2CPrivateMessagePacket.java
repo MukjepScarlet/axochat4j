@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName;
 import lombok.Value;
 import moe.lasoleil.axochat4j.annotation.PacketName;
 import moe.lasoleil.axochat4j.model.AxochatUser;
-import moe.lasoleil.axochat4j.packet.AxochatC2SPacket;
+import moe.lasoleil.axochat4j.packet.AxochatS2CPacket;
 import org.jetbrains.annotations.NotNull;
 
 /**
@@ -14,7 +14,7 @@ import org.jetbrains.annotations.NotNull;
  */
 @PacketName("PrivateMessage")
 @Value
-public class S2CPrivateMessagePacket implements AxochatC2SPacket {
+public class S2CPrivateMessagePacket implements AxochatS2CPacket {
 
     /**
      * author_info is optional and described in detail in UserInfo.

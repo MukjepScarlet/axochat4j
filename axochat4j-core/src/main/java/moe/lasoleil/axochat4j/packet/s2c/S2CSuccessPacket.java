@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.gson.annotations.SerializedName;
 import lombok.Value;
 import moe.lasoleil.axochat4j.annotation.PacketName;
-import moe.lasoleil.axochat4j.packet.AxochatC2SPacket;
+import moe.lasoleil.axochat4j.packet.AxochatS2CPacket;
 import org.jetbrains.annotations.NotNull;
 
 /**
@@ -17,7 +17,7 @@ import org.jetbrains.annotations.NotNull;
  */
 @PacketName("Success")
 @Value
-public class S2CSuccessPacket implements AxochatC2SPacket {
+public class S2CSuccessPacket implements AxochatS2CPacket {
 
     /**
      * reason of success packet
