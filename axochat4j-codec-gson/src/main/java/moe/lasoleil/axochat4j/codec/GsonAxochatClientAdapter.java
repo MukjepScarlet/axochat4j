@@ -20,7 +20,9 @@ public final class GsonAxochatClientAdapter implements AxochatPacket.Adaptor<Str
 
     private GsonAxochatClientAdapter() {}
 
-    private static final Gson DEFAULT_GSON = new Gson();
+    private static final Gson GSON = new Gson();
+
+    private static final JsonObject EMPTY = new JsonObject();
 
     /** Note: this constructor has been deprecated in the latest version. */
     private static final JsonParser JSON_PARSER = new JsonParser();
@@ -65,21 +67,21 @@ public final class GsonAxochatClientAdapter implements AxochatPacket.Adaptor<Str
             if (!(packetBody instanceof JsonObject))
                 throw new MalformedPacketException("Packet body " + packetBody + " is not a JsonObject");
 
-            return DEFAULT_GSON.fromJson(packetBody, type);
+            return GSON.fromJson(packetBody, type);
         } else {
-            return DEFAULT_GSON.fromJson("{}", type);
+            return GSON.fromJson(EMPTY, type);
         }
     }
 
     @Override
     public void write(@NotNull Appendable sink, @NotNull AxochatPacket packet) throws IOException {
+        PacketMetadata metadata = AxochatPacket.metadata(packet);
         JsonWriter writer = new JsonWriter(Streams.writerForAppendable(sink));
         writer.beginObject();
-        PacketMetadata metadata = AxochatPacket.metadata(packet);
         writer.name("m").value(metadata.name());
         if (!metadata.noArg()) {
             writer.name("c");
-            DEFAULT_GSON.toJson(packet, packet.getClass(), writer);
+            GSON.toJson(packet, packet.getClass(), writer);
         }
         writer.endObject();
     }

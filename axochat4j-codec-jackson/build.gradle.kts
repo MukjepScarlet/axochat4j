@@ -1,5 +1,6 @@
 dependencies {
-    api(libs.jackson.annotations)
+    compileOnly(libs.jetbrains.annotations)
+    api(libs.jackson.databind)
     api(project(":axochat4j-core"))
 }
 
