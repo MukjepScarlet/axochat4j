@@ -1,15 +1,15 @@
 package moe.lasoleil.axochat4j.packet.c2s;
 
 import lombok.Value;
-import moe.lasoleil.axochat4j.annotation.PacketName;
-import moe.lasoleil.axochat4j.packet.AxochatC2SPacket;
+import moe.lasoleil.axochat4j.annotation.PacketMetadata;
+import moe.lasoleil.axochat4j.packet.AxochatPacket;
 
 /**
  * After receiving this packet, the server will then send a UserCount packet to the client.
  *
  * This packet has no body.
  */
-@PacketName("RequestUserCount")
+@PacketMetadata(name = "RequestUserCount", noArg = true)
 @Value
-public class C2SRequestUserCountPacket implements AxochatC2SPacket {
+public class C2SRequestUserCountPacket implements AxochatPacket.C2S {
 }

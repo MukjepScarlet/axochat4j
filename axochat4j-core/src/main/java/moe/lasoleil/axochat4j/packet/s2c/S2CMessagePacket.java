@@ -3,18 +3,18 @@ package moe.lasoleil.axochat4j.packet.s2c;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.gson.annotations.SerializedName;
 import lombok.Value;
-import moe.lasoleil.axochat4j.annotation.PacketName;
+import moe.lasoleil.axochat4j.annotation.PacketMetadata;
 import moe.lasoleil.axochat4j.model.AxochatUser;
-import moe.lasoleil.axochat4j.packet.AxochatS2CPacket;
+import moe.lasoleil.axochat4j.packet.AxochatPacket;
 import org.jetbrains.annotations.NotNull;
 
 /**
  * This packet will be sent to every authenticated client
  * if another client successfully sent a message to the server.
  */
-@PacketName("Message")
+@PacketMetadata(name = "Message")
 @Value
-public class S2CMessagePacket implements AxochatS2CPacket {
+public class S2CMessagePacket implements AxochatPacket.S2C {
 
     /**
      * author_info is optional and described in detail in UserInfo.

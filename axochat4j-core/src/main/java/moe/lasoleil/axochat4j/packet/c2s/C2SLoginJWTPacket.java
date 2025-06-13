@@ -3,17 +3,17 @@ package moe.lasoleil.axochat4j.packet.c2s;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.gson.annotations.SerializedName;
 import lombok.Value;
-import moe.lasoleil.axochat4j.annotation.PacketName;
-import moe.lasoleil.axochat4j.packet.AxochatC2SPacket;
+import moe.lasoleil.axochat4j.annotation.PacketMetadata;
+import moe.lasoleil.axochat4j.packet.AxochatPacket;
 import org.jetbrains.annotations.NotNull;
 
 /**
  * To log in using a JWT, the client has to send a LoginJWT packet.
  * It will send Success if the login was successful.
  */
-@PacketName("LoginJWT")
+@PacketMetadata(name = "LoginJWT")
 @Value
-public class C2SLoginJWTPacket implements AxochatC2SPacket {
+public class C2SLoginJWTPacket implements AxochatPacket.C2S {
 
     /**
      * token can be retrieved by sending RequestJWT on an already authenticated connection.

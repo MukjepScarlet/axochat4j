@@ -3,8 +3,8 @@ package moe.lasoleil.axochat4j.packet.s2c;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.gson.annotations.SerializedName;
 import lombok.Value;
-import moe.lasoleil.axochat4j.annotation.PacketName;
-import moe.lasoleil.axochat4j.packet.AxochatS2CPacket;
+import moe.lasoleil.axochat4j.annotation.PacketMetadata;
+import moe.lasoleil.axochat4j.packet.AxochatPacket;
 import org.jetbrains.annotations.NotNull;
 
 /**
@@ -12,9 +12,9 @@ import org.jetbrains.annotations.NotNull;
  * A session hash is synonymous with a server id in the context of authentication with Mojang.
  * The client has to send a LoginMojang packet to the server after authenticating itself with Mojang.
  */
-@PacketName("MojangInfo")
+@PacketMetadata(name = "MojangInfo")
 @Value
-public class S2CMojangInfoPacket implements AxochatS2CPacket {
+public class S2CMojangInfoPacket implements AxochatPacket.S2C {
 
     /**
      * session_hash to authenticate with Mojang

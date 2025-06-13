@@ -3,16 +3,16 @@ package moe.lasoleil.axochat4j.packet.c2s;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.gson.annotations.SerializedName;
 import lombok.Value;
-import moe.lasoleil.axochat4j.annotation.PacketName;
-import moe.lasoleil.axochat4j.packet.AxochatC2SPacket;
+import moe.lasoleil.axochat4j.annotation.PacketMetadata;
+import moe.lasoleil.axochat4j.packet.AxochatPacket;
 import org.jetbrains.annotations.NotNull;
 
 /**
  * The content of this packet will be sent to every client as Message if it fits the validation scheme.
  */
-@PacketName("Message")
+@PacketMetadata(name = "Message")
 @Value
-public class C2SMessagePacket implements AxochatC2SPacket {
+public class C2SMessagePacket implements AxochatPacket.C2S {
 
     /**
      * content of the message.

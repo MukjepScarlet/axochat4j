@@ -1,8 +1,8 @@
 package moe.lasoleil.axochat4j.packet.c2s;
 
 import lombok.Value;
-import moe.lasoleil.axochat4j.annotation.PacketName;
-import moe.lasoleil.axochat4j.packet.AxochatC2SPacket;
+import moe.lasoleil.axochat4j.annotation.PacketMetadata;
+import moe.lasoleil.axochat4j.packet.AxochatPacket;
 
 /**
  * To log in using LoginJWT, a client needs to own a json web token.
@@ -11,7 +11,7 @@ import moe.lasoleil.axochat4j.packet.AxochatC2SPacket;
  *
  * This packet has no body.
  */
-@PacketName("RequestJWT")
+@PacketMetadata(name = "RequestJWT", noArg = true)
 @Value
-public class C2SRequestJWTPacket implements AxochatC2SPacket {
+public class C2SRequestJWTPacket implements AxochatPacket.C2S {
 }

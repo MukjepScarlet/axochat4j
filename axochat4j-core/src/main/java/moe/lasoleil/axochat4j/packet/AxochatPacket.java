@@ -3,20 +3,33 @@ package moe.lasoleil.axochat4j.packet;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.gson.annotations.SerializedName;
 import lombok.Value;
-import moe.lasoleil.axochat4j.annotation.PacketName;
+import moe.lasoleil.axochat4j.annotation.PacketMetadata;
+import moe.lasoleil.axochat4j.packet.c2s.*;
+import moe.lasoleil.axochat4j.packet.s2c.*;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 import java.util.Objects;
 
 /**
  * <h2>AXOCHAT PROTOCOL</h2>
  * <a href="https://github.com/CCBlueX/axochat_server/blob/master/PROTOCOL.md">Documentation</a>
  *
- * <p>All implementations should have {@link PacketName} annotation.</p>
+ * <p>All implementations should have {@link PacketMetadata} annotation.</p>
  */
 public interface AxochatPacket {
+
+    static PacketMetadata metadata(@NotNull AxochatPacket packet) {
+        return metadata(Objects.requireNonNull(packet.getClass()));
+    }
+
+    static PacketMetadata metadata(@NotNull Class<? extends AxochatPacket> packetClass) {
+        return Objects.requireNonNull(packetClass.getAnnotation(PacketMetadata.class));
+    }
 
     /**
      * The full packet is for serialization.
@@ -35,8 +48,8 @@ public interface AxochatPacket {
          * Make a full packet from a packet body, auto read packet name from annotation.
          */
         public static Full of(@NotNull AxochatPacket packet) {
-            PacketName packetName = Objects.requireNonNull(packet.getClass().getAnnotation(PacketName.class));
-            return new Full(packetName.value(), Objects.requireNonNull(packet));
+            PacketMetadata metadata = metadata(packet);
+            return new Full(metadata.name(), metadata.noArg() ? null : packet);
         }
     }
 
@@ -63,5 +76,52 @@ public interface AxochatPacket {
          */
         void write(@NotNull O sink, @NotNull AxochatPacket packet) throws IOException;
 
+    }
+
+    /**
+     * <h2>AXOCHAT PROTOCOL</h2>
+     * <a href="https://github.com/CCBlueX/axochat_server/blob/master/PROTOCOL.md">Documentation</a>
+     * <p>
+     *     <code>C2S</code> means packet from client to server.
+     * </p>
+     */
+    interface C2S extends AxochatPacket {
+
+        List<Class<? extends C2S>> ALL = Collections.unmodifiableList(
+                Arrays.asList(
+                        C2SBanUserPacket.class,
+                        C2SLoginJWTPacket.class,
+                        C2SLoginMojangPacket.class,
+                        C2SMessagePacket.class,
+                        C2SPrivateMessagePacket.class,
+                        C2SRequestJWTPacket.class,
+                        C2SRequestMojangInfoPacket.class,
+                        C2SRequestUserCountPacket.class,
+                        C2SUnbanUserPacket.class
+                )
+        );
+
+    }
+
+    /**
+     * <h2>AXOCHAT PROTOCOL</h2>
+     * <a href="https://github.com/CCBlueX/axochat_server/blob/master/PROTOCOL.md">Documentation</a>
+     * <p>
+     *     <code>S2C</code> means packet from server to client.
+     * </p>
+     */
+    interface S2C extends AxochatPacket {
+
+        List<Class<? extends S2C>> ALL = Collections.unmodifiableList(
+                Arrays.asList(
+                        S2CErrorPacket.class,
+                        S2CMessagePacket.class,
+                        S2CMojangInfoPacket.class,
+                        S2CNewJWTPacket.class,
+                        S2CPrivateMessagePacket.class,
+                        S2CSuccessPacket.class,
+                        S2CUserCountPacket.class
+                )
+        );
     }
 }

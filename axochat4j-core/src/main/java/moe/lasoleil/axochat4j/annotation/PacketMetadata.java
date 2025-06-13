@@ -9,6 +9,7 @@ import java.lang.annotation.Target;
 
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
-public @interface PacketName {
-    @NotNull String value();
+public @interface PacketMetadata {
+    @NotNull String name();
+    boolean noArg() default false;
 }

@@ -3,18 +3,18 @@ package moe.lasoleil.axochat4j.packet.s2c;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.gson.annotations.SerializedName;
 import lombok.Value;
-import moe.lasoleil.axochat4j.annotation.PacketName;
+import moe.lasoleil.axochat4j.annotation.PacketMetadata;
 import moe.lasoleil.axochat4j.model.AxochatUser;
-import moe.lasoleil.axochat4j.packet.AxochatS2CPacket;
+import moe.lasoleil.axochat4j.packet.AxochatPacket;
 import org.jetbrains.annotations.NotNull;
 
 /**
  * This packet will be sent to an authenticated client with allow_messages turned on,
  * if another client successfully sent a private message to the server with the id.
  */
-@PacketName("PrivateMessage")
+@PacketMetadata(name = "PrivateMessage")
 @Value
-public class S2CPrivateMessagePacket implements AxochatS2CPacket {
+public class S2CPrivateMessagePacket implements AxochatPacket.S2C {
 
     /**
      * author_info is optional and described in detail in UserInfo.

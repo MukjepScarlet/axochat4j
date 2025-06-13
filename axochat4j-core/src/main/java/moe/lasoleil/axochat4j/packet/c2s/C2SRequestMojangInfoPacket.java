@@ -1,8 +1,8 @@
 package moe.lasoleil.axochat4j.packet.c2s;
 
 import lombok.Value;
-import moe.lasoleil.axochat4j.annotation.PacketName;
-import moe.lasoleil.axochat4j.packet.AxochatC2SPacket;
+import moe.lasoleil.axochat4j.annotation.PacketMetadata;
+import moe.lasoleil.axochat4j.packet.AxochatPacket;
 
 /**
  * To log in via mojang, the client has to send a RequestMojangInfo packet.
@@ -10,7 +10,7 @@ import moe.lasoleil.axochat4j.packet.AxochatC2SPacket;
  *
  * This packet has no body.
  */
-@PacketName("RequestMojangInfo")
+@PacketMetadata(name = "RequestMojangInfo", noArg = true)
 @Value
-public class C2SRequestMojangInfoPacket implements AxochatC2SPacket {
+public class C2SRequestMojangInfoPacket implements AxochatPacket.C2S {
 }
