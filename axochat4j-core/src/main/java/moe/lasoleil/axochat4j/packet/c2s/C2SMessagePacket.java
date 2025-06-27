@@ -17,7 +17,7 @@ public class C2SMessagePacket implements AxochatPacket.C2S {
     /**
      * content of the message.
      */
-    @SerializedName("name")
-    @JsonProperty("name")
+    @SerializedName("content")
+    @JsonProperty("content")
     @NotNull String content;
 }
