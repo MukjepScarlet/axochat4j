@@ -4,12 +4,13 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.gson.annotations.SerializedName;
 import lombok.Value;
 import moe.lasoleil.axochat4j.annotation.PacketMetadata;
+import moe.lasoleil.axochat4j.exception.MalformedPacketException;
+import moe.lasoleil.axochat4j.exception.PacketIOException;
 import moe.lasoleil.axochat4j.packet.c2s.*;
 import moe.lasoleil.axochat4j.packet.s2c.*;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -69,12 +70,12 @@ public interface AxochatPacket {
         /**
          * Read a packet instance from the input.
          */
-        @NotNull AxochatPacket read(@NotNull I source) throws IOException;
+        @NotNull AxochatPacket read(@NotNull I source) throws PacketIOException, MalformedPacketException;
 
         /**
          * Write a packet instance to the output.
          */
-        void write(@NotNull O sink, @NotNull AxochatPacket packet) throws IOException;
+        void write(@NotNull O sink, @NotNull AxochatPacket packet) throws PacketIOException;
 
     }
 

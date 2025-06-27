@@ -5,6 +5,7 @@ import com.google.gson.internal.Streams;
 import com.google.gson.stream.JsonWriter;
 import moe.lasoleil.axochat4j.annotation.PacketMetadata;
 import moe.lasoleil.axochat4j.exception.MalformedPacketException;
+import moe.lasoleil.axochat4j.exception.PacketIOException;
 import moe.lasoleil.axochat4j.exception.UnknownPacketNameException;
 import moe.lasoleil.axochat4j.packet.AxochatPacket;
 import org.jetbrains.annotations.NotNull;
@@ -45,44 +46,53 @@ public final class GsonAxochatClientAdapter implements AxochatPacket.Adaptor<Str
 
     @NotNull
     @Override
-    public AxochatPacket read(@NotNull String source) throws IOException {
-        JsonElement src = JSON_PARSER.parse(source);
+    public AxochatPacket read(@NotNull String source) throws PacketIOException, MalformedPacketException {
+        try {
+            JsonElement src = JSON_PARSER.parse(source);
 
-        if (!(src instanceof JsonObject))
-            throw new MalformedPacketException("Source JSON " + src + " is not a JsonObject");
+            if (!(src instanceof JsonObject))
+                throw new MalformedPacketException("Source JSON " + src + " is not a JsonObject");
 
-        JsonObject jsonObject = (JsonObject) src;
-        JsonElement packetName = jsonObject.get("m");
-        if (!(packetName instanceof JsonPrimitive))
-            throw new MalformedPacketException("Packet name " + src + " is not a JsonPrimitive");
+            JsonObject jsonObject = (JsonObject) src;
+            JsonElement packetName = jsonObject.get("m");
+            if (!(packetName instanceof JsonPrimitive))
+                throw new MalformedPacketException("Packet name " + src + " is not a JsonPrimitive");
 
-        String realPacketName = packetName.getAsString();
-        Class<? extends AxochatPacket> type = packetNameTypeMap.get(realPacketName);
-        if (type == null)
-            throw new UnknownPacketNameException(realPacketName);
+            String realPacketName = packetName.getAsString();
+            Class<? extends AxochatPacket> type = packetNameTypeMap.get(realPacketName);
+            if (type == null)
+                throw new UnknownPacketNameException(realPacketName);
 
-        PacketMetadata metadata = AxochatPacket.metadata(type);
-        if (!metadata.noArg()) {
-            JsonElement packetBody = jsonObject.get("c");
-            if (!(packetBody instanceof JsonObject))
-                throw new MalformedPacketException("Packet body " + packetBody + " is not a JsonObject");
+            PacketMetadata metadata = AxochatPacket.metadata(type);
+            if (!metadata.noArg()) {
+                JsonElement packetBody = jsonObject.get("c");
+                if (!(packetBody instanceof JsonObject))
+                    throw new MalformedPacketException("Packet body " + packetBody + " is not a JsonObject");
 
-            return GSON.fromJson(packetBody, type);
-        } else {
-            return GSON.fromJson(EMPTY, type);
+                return GSON.fromJson(packetBody, type);
+            } else {
+                return GSON.fromJson(EMPTY, type);
+            }
+        } catch (JsonParseException e) {
+            throw new PacketIOException(e);
         }
     }
 
     @Override
-    public void write(@NotNull Appendable sink, @NotNull AxochatPacket packet) throws IOException {
-        PacketMetadata metadata = AxochatPacket.metadata(packet);
-        JsonWriter writer = new JsonWriter(Streams.writerForAppendable(sink));
-        writer.beginObject();
-        writer.name("m").value(metadata.name());
-        if (!metadata.noArg()) {
-            writer.name("c");
-            GSON.toJson(packet, packet.getClass(), writer);
+    public void write(@NotNull Appendable sink, @NotNull AxochatPacket packet) throws PacketIOException {
+        try {
+            PacketMetadata metadata = AxochatPacket.metadata(packet);
+            JsonWriter writer = new JsonWriter(Streams.writerForAppendable(sink));
+            writer.beginObject();
+            writer.name("m").value(metadata.name());
+            if (!metadata.noArg()) {
+                writer.name("c");
+                GSON.toJson(packet, packet.getClass(), writer);
+            }
+            writer.endObject();
+            writer.flush();
+        } catch (IOException e) {
+            throw new PacketIOException(e);
         }
-        writer.endObject();
     }
 }
