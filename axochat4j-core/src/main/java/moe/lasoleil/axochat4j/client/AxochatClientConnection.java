@@ -19,6 +19,7 @@ public interface AxochatClientConnection extends Closeable {
 
     final class Config {
         private URI uri = null;
+        private AxochatPacket.Adaptor packetAdaptor = null;
         private BiConsumer<AxochatClientConnection, WebSocketConnectionEvent> webSocketHandler = null;
         private BiConsumer<AxochatClientConnection, AxochatPacket.S2C> packetHandler = null;
 
@@ -33,12 +34,18 @@ public interface AxochatClientConnection extends Closeable {
         public static @NotNull Config create(@NotNull Config config) {
             return new Config()
                     .uri(config.uri)
+                    .packetAdaptor(config.packetAdaptor)
                     .webSocketHandler(config.webSocketHandler)
                     .packetHandler(config.packetHandler);
         }
 
         public @NotNull Config uri(@NotNull URI uri) {
             this.uri = uri;
+            return this;
+        }
+
+        public @NotNull Config packetAdaptor(@NotNull AxochatPacket.Adaptor packetAdaptor) {
+            this.packetAdaptor = packetAdaptor;
             return this;
         }
 
