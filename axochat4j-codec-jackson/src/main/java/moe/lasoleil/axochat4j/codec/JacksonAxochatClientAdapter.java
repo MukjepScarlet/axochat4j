@@ -12,14 +12,12 @@ import moe.lasoleil.axochat4j.packet.AxochatPacket;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
-import java.nio.charset.StandardCharsets;
+import java.io.Writer;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
-public final class JacksonAxochatClientAdapter implements AxochatPacket.Adaptor<String, OutputStream> {
+public final class JacksonAxochatClientAdapter implements AxochatPacket.Adaptor {
 
     public static final JacksonAxochatClientAdapter INSTANCE = new JacksonAxochatClientAdapter();
 
@@ -80,10 +78,11 @@ public final class JacksonAxochatClientAdapter implements AxochatPacket.Adaptor<
     }
 
     @Override
-    public void write(@NotNull OutputStream sink, @NotNull AxochatPacket packet) throws PacketIOException {
+    public void write(@NotNull Appendable sink, @NotNull AxochatPacket packet) throws PacketIOException {
         try {
             PacketMetadata metadata = AxochatPacket.metadata(packet);
-            JsonGenerator generator = OBJECT_MAPPER.getFactory().createGenerator(new OutputStreamWriter(sink, StandardCharsets.UTF_8));
+            Writer writer = sink instanceof Writer ? (Writer) sink : new AppendableWriter(sink);
+            JsonGenerator generator = OBJECT_MAPPER.getFactory().createGenerator(writer);
             generator.writeStartObject();
             generator.writeStringField("m", metadata.name());
             if (!metadata.noArg()) {

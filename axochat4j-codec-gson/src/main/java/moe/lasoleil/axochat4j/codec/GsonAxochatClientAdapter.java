@@ -15,7 +15,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
-public final class GsonAxochatClientAdapter implements AxochatPacket.Adaptor<String, Appendable> {
+public final class GsonAxochatClientAdapter implements AxochatPacket.Adaptor {
 
     public static final GsonAxochatClientAdapter INSTANCE = new GsonAxochatClientAdapter();
 

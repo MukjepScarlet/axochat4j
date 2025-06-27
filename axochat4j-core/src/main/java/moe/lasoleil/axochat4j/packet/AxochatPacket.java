@@ -57,7 +57,7 @@ public interface AxochatPacket {
     /**
      * The adaptor is for input and output.
      */
-    interface Adaptor<I, O> {
+    interface Adaptor {
         enum Type {
             CLIENT, SERVER;
         }
@@ -70,12 +70,12 @@ public interface AxochatPacket {
         /**
          * Read a packet instance from the input.
          */
-        @NotNull AxochatPacket read(@NotNull I source) throws PacketIOException, MalformedPacketException;
+        @NotNull AxochatPacket read(@NotNull String source) throws PacketIOException, MalformedPacketException;
 
         /**
          * Write a packet instance to the output.
          */
-        void write(@NotNull O sink, @NotNull AxochatPacket packet) throws PacketIOException;
+        void write(@NotNull Appendable sink, @NotNull AxochatPacket packet) throws PacketIOException;
 
     }
 
