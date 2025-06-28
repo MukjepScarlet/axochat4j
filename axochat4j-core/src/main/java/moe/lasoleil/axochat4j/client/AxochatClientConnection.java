@@ -13,8 +13,8 @@ import java.util.function.BiConsumer;
 public interface AxochatClientConnection extends Closeable {
 
     @FunctionalInterface
-    interface Factory {
-        @NotNull AxochatClientConnection create(@NotNull Config config);
+    interface Factory<T> {
+        @NotNull AxochatClientConnection create(@NotNull T webSocketFactory, @NotNull Config config);
     }
 
     void send(@NotNull AxochatPacket.C2S packet) throws PacketIOException;
