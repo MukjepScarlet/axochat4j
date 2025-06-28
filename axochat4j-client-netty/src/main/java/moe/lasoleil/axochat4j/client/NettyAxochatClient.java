@@ -1,7 +1,6 @@
 package moe.lasoleil.axochat4j.client;
 
 import io.netty.bootstrap.Bootstrap;
-import io.netty.bootstrap.ChannelFactory;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufOutputStream;
 import io.netty.channel.*;
@@ -25,16 +24,11 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
 
-public final class NettyAxochatClient implements AxochatClientConnection.Factory<WebSocketClientHandshakerFactory> {
+public final class NettyAxochatClient implements AxochatClientConnection.Factory<Bootstrap> {
 
-    private final Bootstrap bootstrap;
+    public static final NettyAxochatClient INSTANCE = new NettyAxochatClient();
 
-    public NettyAxochatClient(
-            @NotNull EventLoopGroup group,
-            @NotNull ChannelFactory<SocketChannel> factory
-    ) {
-        this.bootstrap = new Bootstrap().group(group).channelFactory(factory);
-    }
+    private NettyAxochatClient() {}
 
     private static @Nullable SslContext insecureSslContextOrNull(@NotNull URI uri) {
         boolean ssl = "wss".equalsIgnoreCase(uri.getScheme());
@@ -51,7 +45,7 @@ public final class NettyAxochatClient implements AxochatClientConnection.Factory
 
     @Override
     public @NotNull AxochatClientConnection create(
-            @NotNull WebSocketClientHandshakerFactory webSocketFactory,
+            @NotNull Bootstrap bootstrap,
             AxochatClientConnection.@NotNull Config config
     ) {
         if (config.getPacketAdaptor().type() != AxochatPacket.Adaptor.Type.CLIENT) {
