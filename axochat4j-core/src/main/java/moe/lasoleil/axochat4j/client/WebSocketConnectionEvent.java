@@ -3,19 +3,28 @@ package moe.lasoleil.axochat4j.client;
 import lombok.Value;
 import org.jetbrains.annotations.NotNull;
 
-import java.net.URI;
+import java.net.URL;
+import java.nio.ByteBuffer;
 
 public interface WebSocketConnectionEvent {
     
     @Value
     class Connected implements WebSocketConnectionEvent {
-        @NotNull URI uri;
+        @NotNull URL url;
         long timestamp;
     }
 
     @Value
     class Disconnected implements WebSocketConnectionEvent {
-        @NotNull URI uri;
+        @NotNull URL url;
+        int code;
+        @NotNull String reason;
+        long timestamp;
+    }
+
+    @Value
+    class Closing implements WebSocketConnectionEvent {
+        @NotNull URL url;
         int code;
         @NotNull String reason;
         long timestamp;
@@ -28,8 +37,8 @@ public interface WebSocketConnectionEvent {
     }
 
     @Value
-    class TextFrameSent implements WebSocketConnectionEvent {
-        @NotNull String raw;
+    class BinaryFrameReceived implements WebSocketConnectionEvent {
+        @NotNull ByteBuffer raw;
         long timestamp;
     }
 
@@ -41,8 +50,8 @@ public interface WebSocketConnectionEvent {
 
     @Value
     class UnknownMessageFormat implements WebSocketConnectionEvent {
-        @NotNull String message;
-        @NotNull Exception cause;
+        @NotNull String raw;
+        @NotNull Throwable cause;
     }
 
 }

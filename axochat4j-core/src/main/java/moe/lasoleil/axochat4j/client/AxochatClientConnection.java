@@ -1,11 +1,13 @@
 package moe.lasoleil.axochat4j.client;
 
+import lombok.Builder;
+import lombok.Value;
 import moe.lasoleil.axochat4j.exception.PacketIOException;
 import moe.lasoleil.axochat4j.packet.AxochatPacket;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.Closeable;
-import java.net.URI;
+import java.net.URL;
 import java.util.function.BiConsumer;
 
 public interface AxochatClientConnection extends Closeable {
@@ -17,51 +19,13 @@ public interface AxochatClientConnection extends Closeable {
 
     void send(@NotNull AxochatPacket.C2S packet) throws PacketIOException;
 
-    final class Config {
-        private URI uri = null;
-        private AxochatPacket.Adaptor packetAdaptor = null;
-        private BiConsumer<AxochatClientConnection, WebSocketConnectionEvent> webSocketHandler = null;
-        private BiConsumer<AxochatClientConnection, AxochatPacket.S2C> packetHandler = null;
-
-        private Config() {}
-
-        private static final Config DEFAULT = new Config();
-
-        public static @NotNull Config create() {
-            return create(DEFAULT);
-        }
-
-        public static @NotNull Config create(@NotNull Config config) {
-            return new Config()
-                    .uri(config.uri)
-                    .packetAdaptor(config.packetAdaptor)
-                    .webSocketHandler(config.webSocketHandler)
-                    .packetHandler(config.packetHandler);
-        }
-
-        public @NotNull Config uri(@NotNull URI uri) {
-            this.uri = uri;
-            return this;
-        }
-
-        public @NotNull Config packetAdaptor(@NotNull AxochatPacket.Adaptor packetAdaptor) {
-            this.packetAdaptor = packetAdaptor;
-            return this;
-        }
-
-        public @NotNull Config webSocketHandler(@NotNull BiConsumer<AxochatClientConnection, WebSocketConnectionEvent> webSocketHandler) {
-            this.webSocketHandler = webSocketHandler;
-            return this;
-        }
-
-        public @NotNull Config packetHandler(@NotNull BiConsumer<AxochatClientConnection, AxochatPacket.S2C> packetHandler) {
-            this.packetHandler = packetHandler;
-            return this;
-        }
-
-        public @NotNull AxochatClientConnection connect(@NotNull Factory factory) {
-            return factory.create(this);
-        }
+    @Builder
+    @Value
+    class Config {
+        @NotNull URL url;
+        @NotNull AxochatPacket.Adaptor packetAdaptor;
+        @NotNull BiConsumer<AxochatClientConnection, WebSocketConnectionEvent> webSocketHandler;
+        @NotNull BiConsumer<AxochatClientConnection, AxochatPacket.S2C> packetHandler;
     }
 
 }
