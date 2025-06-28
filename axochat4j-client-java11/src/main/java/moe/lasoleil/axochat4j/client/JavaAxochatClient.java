@@ -25,6 +25,13 @@ public final class JavaAxochatClient implements AxochatClientConnection.Factory<
             throw new IllegalArgumentException("Packet adaptor type must be CLIENT");
         }
 
+        URI uri;
+        try {
+            uri = config.getUrl().toURI();
+        } catch (URISyntaxException e) {
+            throw new IllegalArgumentException("Invalid URL", e);
+        }
+
         var webSocketRef = new WebSocket[1];
 
         var connection = new AxochatClientConnection() {
@@ -40,13 +47,6 @@ public final class JavaAxochatClient implements AxochatClientConnection.Factory<
                 webSocketRef[0].sendClose(WebSocket.NORMAL_CLOSURE, null);
             }
         };
-
-        URI uri;
-        try {
-            uri = config.getUrl().toURI();
-        } catch (URISyntaxException e) {
-            throw new IllegalArgumentException("Invalid URL", e);
-        }
 
         webSocketFactory
                 .buildAsync(uri, new WebSocket.Listener() {

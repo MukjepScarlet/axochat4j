@@ -2,6 +2,7 @@ package moe.lasoleil.axochat4j.client;
 
 import lombok.Value;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.net.URL;
 import java.nio.ByteBuffer;
@@ -18,15 +19,7 @@ public interface WebSocketConnectionEvent {
     class Disconnected implements WebSocketConnectionEvent {
         @NotNull URL url;
         int code;
-        @NotNull String reason;
-        long timestamp;
-    }
-
-    @Value
-    class Closing implements WebSocketConnectionEvent {
-        @NotNull URL url;
-        int code;
-        @NotNull String reason;
+        @Nullable String reason;
         long timestamp;
     }
 
